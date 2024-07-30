@@ -16,6 +16,24 @@ const connectDB = async () => {
     }
 };
 
+const connectWithRetry = () => {
+    return new Promise((resolve, reject) => {
+        const connect = () => {
+            console.log('Attempting MongoDB connection...');
+            mongoose.connect(process.env.MONGO_URL,)
+                .then(() => {
+                    console.log('MongoDB is connected');
+                    resolve();
+                })
+                .catch(err => {
+                    console.error('MongoDB connection unsuccessful, retrying in 2 seconds...');
+                    setTimeout(connect, 2000);
+                });
+        };
+        connect();
+    });
+};
+
 const userSchema = mongoose.Schema({
     userName: {
         type: String,
@@ -47,5 +65,6 @@ const UserModel = mongoose.model("User", userSchema);
 
 module.exports = {
     UserModel,
-    connectDB
+    connectDB,
+    connectWithRetry
 }

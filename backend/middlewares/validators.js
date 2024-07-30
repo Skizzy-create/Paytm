@@ -1,4 +1,4 @@
-const { userSingUpZod, userLoginZod } = require("../schemas/zodSchema");
+const { userSingUpZod, userLoginZod, userInfoUpdateSchema } = require("../schemas/zodSchema");
 
 function validateUserSingUp(req, res, next) {
     const username = req.body.username;
@@ -14,7 +14,7 @@ function validateUserSingUp(req, res, next) {
             password: password
         });
         console.log("Singup Route called");
-        console.log("isValid = " + isValid.success);
+        console.log("isValid zod= " + isValid.success);
 
         if (!isValid) {
             return res.status(411).json({
@@ -32,7 +32,7 @@ function validateUserSingUp(req, res, next) {
     }
 };
 
-function validateUserLogin(req, res, next) {
+async function validateUserLogin(req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -42,7 +42,7 @@ function validateUserLogin(req, res, next) {
             password: password
         });
         console.log("Login Route called");
-        console.log("isValid = " + isValid.success);
+        console.log("isValid zod= " + isValid.success);
 
         if (!isValid) {
             return res.status(411).json({
@@ -60,7 +60,33 @@ function validateUserLogin(req, res, next) {
     }
 };
 
+function validateUserInfoUpdate(req, res, next) {
+    const body = req.body;
+    try {
+        const isValid = userInfoUpdateSchema.safeParse({
+            body
+        });
+        console.log("User Infor update Route Called. PUT@/user/");
+        console.log("isValid zod= " + isValid.success);
+
+        if (!isValid.success) {
+            return res.status(411).json({
+                msg: "The Data sent is not of the right format",
+                error: isValid.err
+            });
+        }
+        next();
+    } catch (err) {
+        console.log("Error: ", err);
+        return res.status(500).json({
+            msg: "Internal Server Error -ZOD VALIDATION USER UPDATE",
+            error: err
+        });
+    }
+}
+
 module.exports = {
     validateUserSingUp,
-    validateUserLogin
+    validateUserLogin,
+    validateUserInfoUpdate
 }

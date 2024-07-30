@@ -39,7 +39,7 @@ This project uses the following libraries:
 - ![jsonwebtoken](https://img.shields.io/badge/jsonwebtoken-^9.0.2-blue)
 - ![mongoose](https://img.shields.io/badge/mongoose-^8.1.0-blue)
 - ![zod](https://img.shields.io/badge/zod-^3.23.8-blue)
-- ![nodemon](https://img.shields.io/badge/nodemon-^2.0.15-blue)
+- ![nodemon](https://img.shields.io/badge/nodemon-3.1.4-blue)
 
 ## Routes
 

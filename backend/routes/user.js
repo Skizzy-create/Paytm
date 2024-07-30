@@ -1,7 +1,9 @@
 const express = require("express");
-const { validateUserSingUp, validateUserLogin } = require("../middlewares/validators");
+const { validateUserSingUp, validateUserLogin, validateUserInfoUpdate } = require("../middlewares/validators");
 const { UserModel } = require("../database/db");
-const { generateToken } = require("../auth/authOps");
+const { generateToken, hashedPassword, checkPassword } = require("../auth/authOps");
+const { authenticateToken } = require("../auth/auth");
+const { authMiddleware } = require("../middlewares/middlewares");
 const router = express.Router();
 
 
@@ -13,26 +15,28 @@ router.post('/signup', validateUserSingUp, async (req, res) => {
 
   try {
     const existingUser = await UserModel.findOne({
-      username: username
+      userName: username
     });
 
     if (existingUser) {
+      console.log("UserName already taken");
       return res.status(411).json({
         msg: "UserName already taken"
       });
     }
+    const hPssword = await hashedPassword(password);
 
     const newUser = await UserModel.create({
       userName: username,
       firstName: firstName,
       lastName: lastName,
-      password: password
+      password: hPssword
     });
 
     const token = generateToken(newUser, res);
     if (!token) {
       await UserModel.deleteOne({
-        username: username
+        userName: username
       });
       console.log("User deleted -- Error generating JWT token -- post signup");
 
@@ -47,7 +51,7 @@ router.post('/signup', validateUserSingUp, async (req, res) => {
     });
 
   } catch (err) {
-    console.log("Server Error: SingUp Route");
+    console.log("Server Error: SingUp Route \nError: " + err);
     return res.status(411).json({
       msg: "SERVER ERROR -- SINGUP ROUTE",
       error: err
@@ -65,7 +69,7 @@ router.post('/login', validateUserLogin, async (req, res) => {
     const existingUser = await UserModel.findOne({
       $and: [
         { userName: username },
-        { password: password }
+        // { password: password }
       ]
     });
 
@@ -73,7 +77,17 @@ router.post('/login', validateUserLogin, async (req, res) => {
 
     if (existingUser === null) {
       return res.status(411).json({
-        msg: "User not found / Credentials Incorrect"
+        msg: "User not found / Credentials Incorrect",
+        validation: false
+      });
+    }
+
+    const isValid = await checkPassword(password, existingUser.password);
+    console.log(isValid);
+    if (!isValid) {
+      return res.status(403).json({
+        msg: "Invalid Credentials/ Wrong data",
+        validation: false
       });
     }
 
@@ -92,8 +106,7 @@ router.post('/login', validateUserLogin, async (req, res) => {
     });
 
   } catch (err) {
-
-    console.log("Server Error: Login Route");
+    console.log("Server Error: Login Route\nError: ", err);
 
     return res.status(411).json({
       msg: "SERVER ERROR -- LOGIN ROUTE",
@@ -102,5 +115,56 @@ router.post('/login', validateUserLogin, async (req, res) => {
 
   }
 });
+
+router.put('/', validateUserInfoUpdate, authenticateToken, authMiddleware, async (req, res) => {
+  const newBody = req.body;
+  const id = req.user.id;
+  const id2 = req.user.id;
+  console.log("Id from token = ", id);
+  console.log("Id from header = ", id2);
+  try {
+    const existingUser = await UserModel.findById(id); // Use findById for MongoDB _id
+
+    if (!existingUser) {
+      console.log("No user found with ID: ", id);
+      return res.status(411).json({
+        msg: "Invalid Credentials/ Wrong data",
+        validation: false
+      });
+    }
+    let hPassword = null;
+    if (req.body.password) {
+      hPassword = await hashedPassword(req.body.password)
+    };
+    newBody.password = hPassword;
+    const updatedUser = await UserModel.updateOne(
+      { _id: id },
+      { $set: newBody } // Corrected: use $set to update fields
+    );
+
+    if (!updatedUser.acknowledged) {
+      console.log("User Update Failed");
+      console.log(updatedUser);
+      return res.status(411).json({
+        msg: "User Update Failed",
+      });
+    }
+
+    console.log("User Updated Successfully");
+    return res.status(200).json({
+      msg: "User Updated Successfully",
+      user: updatedUser
+    });
+
+  } catch (err) {
+
+    console.log("SERVER ERROR -- USER INFO UPDATE ROUTE\n", err);
+    return res.status(500).json({
+      msg: "SERVER ERROR -- USER INFO UPDATE ROUTE",
+      error: err
+    });
+  }
+});
+
 
 module.exports = router;
