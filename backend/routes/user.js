@@ -157,7 +157,45 @@ router.put('/', validateUserInfoUpdate, authenticateToken, authMiddleware, async
     });
 
   } catch (err) {
+    console.log("SERVER ERROR -- USER INFO UPDATE ROUTE\n", err);
+    return res.status(500).json({
+      msg: "SERVER ERROR -- USER INFO UPDATE ROUTE",
+      error: err
+    });
+  }
+});
 
+router.get('/bulk', authenticateToken, authMiddleware, async (req, res) => {
+  const filter = req.query.filter || "";
+  // console.log("filter = " + filter);
+  try {
+    let users = [];
+    if (filter) {
+      users = await UserModel.find({
+        $or: [{
+          firstName: {
+            "$regex": filter
+          }
+        }, {
+          lastName: {
+            "$regex": filter
+          }
+        }]
+      });
+    } else {
+      users = []; // Return an empty array or handle as needed when no filter is provided
+    }
+    // console.log("Users found:", users);
+
+    res.json({
+      user: users.map(user => ({
+        username: user.userName,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        _id: user._id
+      }))
+    });
+  } catch (err) {
     console.log("SERVER ERROR -- USER INFO UPDATE ROUTE\n", err);
     return res.status(500).json({
       msg: "SERVER ERROR -- USER INFO UPDATE ROUTE",
