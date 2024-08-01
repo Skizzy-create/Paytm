@@ -1,7 +1,3 @@
-Sure, let's enhance the documentation and remove the Postman collection references.
-
----
-
 # Paytm Simple Application
 
 Welcome to the Paytm backend application! This project is built with Express.js and provides robust user authentication routes for signup, login, and more.
@@ -158,7 +154,3 @@ This project uses the following libraries:
             "msg": "Server Error"
         }
         ```
-
----
-
-Feel free to dive in and explore the functionality. If you have any questions or run into issues, don't hesitate to ask! Happy coding! 😄
