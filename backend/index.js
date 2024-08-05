@@ -39,7 +39,11 @@ const startServer = async () => {
         app.use(express.json());
 
         app.use("/api/v1", mainRouter);
-
+        app.get('/', (req, res) => {
+            res.status(200).json({
+                msg: "Welcome to the Bank API"
+            });
+        });
         app.listen(PORT, () => {
             console.log(`Server running on https://localhost:${PORT}`);
         });
