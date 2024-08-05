@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { connectDB, connectWithRetry } = require("./database/db");
+const { connectDB, connectWithRetry, UserModel } = require("./database/db");
 const mainRouter = require("./routes/index");
 const { countRequests, countTime } = require("./middlewares/utility");
 const cookieParser = require("cookie-parser");
@@ -47,7 +47,7 @@ const startServer = async () => {
         });
 
         app.get('/users', async (req, res) => {
-            const users = await userModel.find({});
+            const users = await UserModel.find({});
             // using map function to send the username, firstname, lastname of the user.
             const userData = users.map((user) => {
                 return {
@@ -64,6 +64,15 @@ const startServer = async () => {
 
         app.listen(PORT, () => {
             console.log(`Server running on https://localhost:${PORT}`);
+        });
+
+        // global error handler
+        app.use((err, req, res, next) => {
+            console.error(err);
+            res.status(500).json({
+                msg: "Internal Server Error",
+                error: err
+            });
         });
     } catch (err) {
         console.error('Failed to connect to MongoDB:', err);
