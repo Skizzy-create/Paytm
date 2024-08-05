@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { connectDB, connectWithRetry, UserModel } = require("./database/db");
+const { connectDB, connectWithRetry, UserModel, accountModel } = require("./database/db");
 const mainRouter = require("./routes/index");
 const { countRequests, countTime } = require("./middlewares/utility");
 const cookieParser = require("cookie-parser");
@@ -62,8 +62,11 @@ const startServer = async () => {
             });
         });
 
-        app.listen(PORT, () => {
-            console.log(`Server running on https://localhost:${PORT}`);
+        app.get('/accounts', async (req, res) => {
+            const accounts = await accountModel.find({});
+            return res.status(200).json({
+                accounts: accounts
+            });
         });
 
         // global error handler
@@ -73,6 +76,10 @@ const startServer = async () => {
                 msg: "Internal Server Error",
                 error: err
             });
+        });
+
+        app.listen(PORT, () => {
+            console.log(`Server running on https://localhost:${PORT}`);
         });
     } catch (err) {
         console.error('Failed to connect to MongoDB:', err);
