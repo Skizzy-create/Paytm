@@ -65,7 +65,7 @@ const startServer = async () => {
         app.get('/accounts', async (req, res) => {
             const accounts = await accountModel.find({});
             return res.status(200).json({
-                accounts: accounts
+                accounts
             });
         });
 
