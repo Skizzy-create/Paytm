@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paytm Users</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/4.1.17/framer-motion.umd.min.js"></script>
+</head>
+<body>
+    <div class="button-container">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        <button class="github-button" onclick="window.open('https://github.com/yourusername', '_blank')">GitHub</button>
+        <button class="refresh-button" onclick="location.reload()">Refresh Data</button>
+    </div>
+    <div class="header">
+        <h1 id="main-heading">Paytm Users</h1>
+    </div>
+    <div class="container">
+        <div id="user-cards" class="user-cards"></div>
+    </div>
+    <div id="animated-background"></div>
+    <script src="script.js"></script>
+</body>
+</html>

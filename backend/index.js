@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const { connectDB, connectWithRetry, UserModel, accountModel } = require("./database/db");
+const path = require("path");
+const { connectDB, connectWithRetry, UserModel, accountModel, } = require("./database/db");
 const mainRouter = require("./routes/index");
 const { countRequests, countTime } = require("./middlewares/utility");
 const cookieParser = require("cookie-parser");
@@ -48,7 +49,7 @@ const startServer = async () => {
 
         app.get('/users', async (req, res) => {
             const users = await UserModel.find({});
-            // using map function to send the username, firstname, lastname of the user.
+            // Using map function to send the username, firstname, lastname of the user.
             const userData = users.map((user) => {
                 return {
                     userName: user.userName,
@@ -69,7 +70,12 @@ const startServer = async () => {
             });
         });
 
-        // global error handler
+        // New route to serve the HTML page
+        app.get('/displayUsers', (req, res) => {
+            res.sendFile(path.join(__dirname, '..', 'frontend', 'prodTest', 'index.html'));
+        });
+
+        // Global error handler
         app.use((err, req, res, next) => {
             console.error(err);
             res.status(500).json({
