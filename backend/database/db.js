@@ -34,7 +34,7 @@ const connectWithRetry = () => {
     });
 };
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     userName: {
         type: String,
         required: true,
@@ -48,11 +48,13 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        lowercase: true
     },
     lastName: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        lowercase: true
     },
     password: {
         type: String,
@@ -61,10 +63,26 @@ const userSchema = mongoose.Schema({
     }
 });
 
+const accountSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+        unique: true
+    },
+    balance: {
+        type: Number,
+        required: true,
+        default: 0
+    }
+});
+
 const UserModel = mongoose.model("User", userSchema);
+const accountModel = mongoose.model("Account", accountSchema);
 
 module.exports = {
     UserModel,
     connectDB,
-    connectWithRetry
+    connectWithRetry,
+    accountModel
 }

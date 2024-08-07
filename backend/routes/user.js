@@ -1,6 +1,6 @@
 const express = require("express");
 const { validateUserSingUp, validateUserLogin, validateUserInfoUpdate } = require("../middlewares/validators");
-const { UserModel } = require("../database/db");
+const { UserModel, accountModel } = require("../database/db");
 const { generateToken, hashedPassword, checkPassword } = require("../auth/authOps");
 const { authenticateToken } = require("../auth/auth");
 const { authMiddleware } = require("../middlewares/middlewares");
@@ -33,6 +33,26 @@ router.post('/signup', validateUserSingUp, async (req, res) => {
       password: hPssword
     });
 
+    // -------- Initiating Random Bank Balance for the user --------
+    const newUserId = newUser._id;
+
+    const newAccoount = await accountModel.create({
+      userId: newUserId,
+      balance: Math.floor((1 + Math.random() * 10000))
+    })
+
+    if (!newAccoount) {
+      await UserModel.deleteOne({
+        userName: username
+      });
+
+      console.log("Error creating account for user");
+      return res.status(500).json({
+        msg: "Error creating account for user",
+        action: "User deleted"
+      });
+    }
+
     const token = generateToken(newUser, res);
     if (!token) {
       await UserModel.deleteOne({
@@ -51,6 +71,9 @@ router.post('/signup', validateUserSingUp, async (req, res) => {
     });
 
   } catch (err) {
+    await UserModel.deleteOne({
+      userName: username
+    });
     console.log("Server Error: SingUp Route \nError: " + err);
     return res.status(411).json({
       msg: "SERVER ERROR -- SINGUP ROUTE",
@@ -119,7 +142,7 @@ router.post('/login', validateUserLogin, async (req, res) => {
 router.put('/', validateUserInfoUpdate, authenticateToken, authMiddleware, async (req, res) => {
   const newBody = req.body;
   const id = req.user.id;
-  const id2 = req.user.id;
+  const id2 = res.user.id;
   console.log("Id from token = ", id);
   console.log("Id from header = ", id2);
   try {

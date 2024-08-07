@@ -1,4 +1,4 @@
-const { userSingUpZod, userLoginZod, userInfoUpdateSchema } = require("../schemas/zodSchema");
+const { userSingUpZod, userLoginZod, userInfoUpdateSchema, accountTransferSchema } = require("../schemas/zodSchema");
 
 function validateUserSingUp(req, res, next) {
     const username = req.body.username;
@@ -66,7 +66,7 @@ function validateUserInfoUpdate(req, res, next) {
         const isValid = userInfoUpdateSchema.safeParse({
             body
         });
-        console.log("User Infor update Route Called. PUT@/user/");
+        console.log("User Info update Route Called. PUT@/user/");
         console.log("isValid zod= " + isValid.success);
 
         if (!isValid.success) {
@@ -85,8 +85,33 @@ function validateUserInfoUpdate(req, res, next) {
     }
 }
 
+function validateAccountTransfer(res, res, next) {
+    const body = req.body;
+    try {
+        const isValid = accountTransferSchema.safeParse({
+            body
+        });
+        console.log("Account Transfer Route Called. POST@/account/transfer");
+        console.log("isValid zod= " + isValid.success);
+
+        if (!isValid.success) {
+            return res.status(411).json({
+                msg: "The Data sent is not of the right format",
+                error: isValid.err
+            });
+        }
+        next();
+    } catch (err) {
+        return res.status(500).json({
+            msg: "Internal Server Error -ZOD VALIDATION ACCOUNT TRANSFER",
+            error: err
+        });
+    }
+}
+
 module.exports = {
     validateUserSingUp,
     validateUserLogin,
-    validateUserInfoUpdate
+    validateUserInfoUpdate,
+    validateAccountTransfer
 }

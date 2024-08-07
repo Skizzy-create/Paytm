@@ -18,8 +18,14 @@ const userInfoUpdateSchema = zod.object({
     lastName: zod.string().optional()
 });
 
+const accountTransferSchema = zod.object({
+    to: zod.string(),
+    amount: zod.number()
+});
+
 module.exports = {
     userSingUpZod,
     userLoginZod,
-    userInfoUpdateSchema
+    userInfoUpdateSchema,
+    accountTransferSchema
 }
