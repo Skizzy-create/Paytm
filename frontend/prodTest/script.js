@@ -8,36 +8,51 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
             const users = data.users; // Assuming the response has a 'users' key
-            console.log('Fetched users:', users); // Debugging line to check the fetched data
-            const userCardsContainer = document.getElementById('user-cards');
+            const userCards = document.getElementById('user-cards');
+            userCards.innerHTML = '';
             users.forEach(user => {
-                const userCard = document.createElement('div');
-                userCard.classList.add('user-card');
-                userCard.innerHTML = `
-                    <h3>${user.firstName} ${user.lastName}</h3>
-                    <p>Email: ${user.userName}</p>
+                const card = document.createElement('div');
+                card.classList.add('user-card');
+                card.innerHTML = `
+                    <h3>${user.userName}</h3>
+                    <p>First Name: ${user.firstName}</p>
+                    <p>Last Name: ${user.lastName}</p>
                 `;
-                userCardsContainer.appendChild(userCard);
+                userCards.appendChild(card);
             });
         })
-        .catch(error => console.error('Error fetching users:', error));
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
 
-    // Animate the main heading with Framer Motion
-    const heading = document.getElementById('main-heading');
-    window.framer.motion.animate(heading, { scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }, { duration: 2, repeat: Infinity });
-
-    // Create and animate background objects with Framer Motion
-    const background = document.getElementById('animated-background');
-    for (let i = 0; i < 10; i++) {
-        const object = document.createElement('div');
-        object.classList.add('animated-object');
-        object.style.top = `${Math.random() * 100}%`;
-        object.style.left = `${Math.random() * 100}%`;
-        background.appendChild(object);
-        window.framer.motion.animate(object, { y: [0, -20, 20, 0], x: [0, 20, -20, 0] }, { duration: 5, repeat: Infinity, ease: "easeInOut" });
-    }
+    toggleDarkMode();
+    animateBackground();
 });
 
 function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
+    const body = document.body;
+    body.classList.toggle('dark-mode');
 }
+
+// function animateBackground() {
+//     const background = document.getElementById('animated-background');
+//     for (let i = 0; i < 20; i++) {
+//         const object = document.createElement('div');
+//         object.classList.add('animated-object');
+//         object.style.left = Math.random() * 100 + 'vw';
+//         object.style.top = Math.random() * 100 + 'vh';
+//         background.appendChild(object);
+
+//         setTimeout(() => {
+//             object.style.transform = `translate(${Math.random() * 100 - 50}vw, ${Math.random() * 100 - 50}vh)`;
+//             object.style.opacity = '0';
+//         }, 100);
+//     }
+
+//     setTimeout(() => {
+//         while (background.firstChild) {
+//             background.removeChild(background.firstChild);
+//         }
+//         animateBackground();
+//     }, 3000);
+// }

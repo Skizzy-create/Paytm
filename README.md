@@ -36,7 +36,7 @@ Welcome to the Paytm backend application! This project is built with Express.js 
 
 This project uses the following libraries:
 
-![bcryptjs](https://img.shields.io/badge/bcryptjs-^2.4.3-blue) ![cors](https://img.shields.io/badge/cors-^2.8.5-blue) ![dotenv](https://img.shields.io/badge/dotenv-^16.4.5-blue) ![express](https://img.shields.io/badge/express-^4.18.2-blue) ![jsonwebtoken](https://img.shields.io/badge/jsonwebtoken-^9.0.2-blue) ![mongoose](https://img.shields.io/badge/mongoose-^8.1.0-blue) ![zod](https://img.shields.io/badge/zod-^3.23.8-blue) ![nodemon](https://img.shields.io/badge/nodemon-3.1.4-blue)
+![bcryptjs](https://img.shields.io/badge/bcryptjs-^2.4.3-blue) ![cors](https://img.shields.io/badge/cors-^2.8.5-blue) ![dotenv](https://img.shields.io/badge/dotenv-^16.4.5-blue) ![express](https://img.shields.io/badge/express-^4.18.2-blue) ![jsonwebtoken](https://img.shields.io/badge/jsonwebtoken-^9.0.2-blue) ![mongoose](https://img.shields.io/badge/mongoose-^8.1.0-blue) ![zod](https://img.shields.io/badge/zod-^3.23.8-blue) ![nodemon](https://img.shields.io/badge/nodemon-^3.1.4-blue)
 
 ## 🔥 Routes
 

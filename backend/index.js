@@ -41,6 +41,14 @@ const startServer = async () => {
 
         app.use("/api/v1", mainRouter);
 
+        // Serve static files from the frontend/prodTest directory
+        app.use('/static', express.static(path.join(__dirname, '..', 'frontend', 'prodTest')));
+
+        // New route to serve the HTML page
+        app.get('/displayUsers', (req, res) => {
+            res.sendFile(path.join(__dirname, '..', 'frontend', 'prodTest', 'index.html'));
+        });
+
         app.get('/', (req, res) => {
             res.status(200).json({
                 msg: "Welcome to the Bank API"
@@ -49,15 +57,11 @@ const startServer = async () => {
 
         app.get('/users', async (req, res) => {
             const users = await UserModel.find({});
-            // Using map function to send the username, firstname, lastname of the user.
-            const userData = users.map((user) => {
-                return {
-                    userName: user.userName,
-                    firstName: user.firstName,
-                    lastName: user.lastName
-                }
-            });
-
+            const userData = users.map((user) => ({
+                userName: user.userName,
+                firstName: user.firstName,
+                lastName: user.lastName
+            }));
             return res.status(200).json({
                 users: userData
             });
@@ -68,11 +72,6 @@ const startServer = async () => {
             return res.status(200).json({
                 accounts
             });
-        });
-
-        // New route to serve the HTML page
-        app.get('/displayUsers', (req, res) => {
-            res.sendFile(path.join(__dirname, '..', 'frontend', 'prodTest', 'index.html'));
         });
 
         // Global error handler
