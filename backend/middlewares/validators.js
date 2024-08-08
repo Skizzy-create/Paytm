@@ -19,7 +19,7 @@ function validateUserSingUp(req, res, next) {
         if (!isValid) {
             return res.status(411).json({
                 msg: "The Data sent is not of the right format",
-                error: isValid.err
+                error: isValid.error
             });
         }
         next();
@@ -47,7 +47,7 @@ async function validateUserLogin(req, res, next) {
         if (!isValid) {
             return res.status(411).json({
                 msg: "The Data sent is not of the right format",
-                error: isValid.err
+                error: isValid.error
             });
         }
         next();
@@ -72,7 +72,7 @@ function validateUserInfoUpdate(req, res, next) {
         if (!isValid.success) {
             return res.status(411).json({
                 msg: "The Data sent is not of the right format",
-                error: isValid.err
+                error: isValid.error
             });
         }
         next();
@@ -85,19 +85,20 @@ function validateUserInfoUpdate(req, res, next) {
     }
 }
 
-function validateAccountTransfer(res, res, next) {
+function validateAccountTransfer(req, res, next) {
     const body = req.body;
     try {
-        const isValid = accountTransferSchema.safeParse({
+        const isValid = accountTransferSchema.safeParse(
             body
-        });
+        );
         console.log("Account Transfer Route Called. POST@/account/transfer");
         console.log("isValid zod= " + isValid.success);
 
         if (!isValid.success) {
+            console.log("error: " + isValid.error);
             return res.status(411).json({
                 msg: "The Data sent is not of the right format",
-                error: isValid.err
+                error: isValid.error
             });
         }
         next();

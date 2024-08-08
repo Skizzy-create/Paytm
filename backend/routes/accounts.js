@@ -3,6 +3,7 @@ const { authMiddleware } = require('../middlewares/middlewares');
 const { authenticateToken } = require('../auth/auth');
 const { accountModel } = require('../database/db');
 const { default: mongoose } = require('mongoose');
+const { validateAccountTransfer } = require('../middlewares/validators');
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.get('/balance', authMiddleware, authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/transfer', authMiddleware, authenticateToken, async (req, res) => {
+router.post('/transfer', validateAccountTransfer, authMiddleware, authenticateToken, async (req, res) => {
     const sendersId = res.user.id;
     const reciverId = req.body.to;
     const amount = req.body.amount;
@@ -43,9 +44,9 @@ router.post('/transfer', authMiddleware, authenticateToken, async (req, res) => 
         // Starting the session
         session.startTransaction();
 
-        const senderAccount = await accountModel.findOne.session(session)({
+        const senderAccount = await accountModel.findOne({
             userId: sendersId,
-        });
+        }).session(session);
 
         if (!senderAccount) {
             return res.status(400).json({
@@ -59,9 +60,9 @@ router.post('/transfer', authMiddleware, authenticateToken, async (req, res) => 
             });
         }
 
-        const reciverAccount = await accountModel.findOne.session(session)({
+        const reciverAccount = await accountModel.findOne({
             userId: reciverId
-        });
+        }).session(session);
 
         if (reciverAccount === null) {
             return res.status(400).json({
@@ -83,7 +84,7 @@ router.post('/transfer', authMiddleware, authenticateToken, async (req, res) => 
         }).session(session);
 
         // adding the money to the recivers account
-        await accountModel.updateOne({ userId: reciverId, }, { $inc: { balance: amount } });
+        await accountModel.updateOne({ userId: reciverId, }, { $inc: { balance: amount } }).session(session);
 
         // Commit the transaction
         await session.commitTransaction();
@@ -93,6 +94,7 @@ router.post('/transfer', authMiddleware, authenticateToken, async (req, res) => 
         });
 
     } catch (err) {
+        console.log(err);
         return res.status(500).json({
             msg: "Server Error --Transfer Route",
             error: err
