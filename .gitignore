@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-node_modules
-
-# addiung the .env file to the gitignore
-.env
-=======
 # Logs
 logs
 *.log
@@ -134,4 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
->>>>>>> e2925dcd34a49ba8fa874220e1e3588c70cfeba7
+
+#extra project specific files
+Extra/
