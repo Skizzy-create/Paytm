@@ -11,12 +11,12 @@ export const Signin = () => {
             <div className=" rounded-lg bg-white w-80 text-center p-2 h-max px-4">
                 <Heading label={"Login"} />
                 <SubHeading label={"Enter your credentials to access your account"} />
-                <InputBox label={"email"} placeholder={'example@gmail.com'} />
+                <InputBox label={"email"} placeholder={'madhav@gmail.com'} />
                 <InputBox label={"password"} placeholder={'password'} />
                 <div className=" pt-4 ">
                     <Button label={'Signin'} />
                 </div>
-                <BottomWarning label={"Don't have an account?"} to={"/Signup"} buttonText={"SignIn"} />
+                <BottomWarning label={"Don't have an account?"} to={"/Signup"} buttonText={"Sign Up"} />
             </div>
         </div>
     </div>    
