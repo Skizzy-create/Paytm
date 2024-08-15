@@ -188,7 +188,7 @@ router.put('/', validateUserInfoUpdate, authenticateToken, authMiddleware, async
   }
 });
 
-router.get('/bulk', authenticateToken, authMiddleware, async (req, res) => {
+router.get('/bulk', async (req, res) => {
   const filter = req.query.filter || "";
   // console.log("filter = " + filter);
   try {
