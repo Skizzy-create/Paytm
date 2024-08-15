@@ -37,7 +37,7 @@ const startServer = async () => {
         app.use(countTime);
         app.use(cookieParser());
         app.use(cors({
-            origin: 'https://paytm-e228.onrender.com', // Replace with your frontend domain
+            origin: 'http://localhost:5173', // Replace with your frontend domain
             credentials: true
         }));
         app.use(express.json());
