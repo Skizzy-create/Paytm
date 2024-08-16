@@ -16,7 +16,7 @@ function validateUserSingUp(req, res, next) {
         console.log("Singup Route called");
         console.log("isValid zod= " + isValid.success);
 
-        if (!isValid) {
+        if (!isValid.success) {
             return res.status(411).json({
                 msg: "The Data sent is not of the right format",
                 error: isValid.error
@@ -44,7 +44,7 @@ async function validateUserLogin(req, res, next) {
         console.log("Login Route called");
         console.log("isValid zod= " + isValid.success);
 
-        if (!isValid) {
+        if (!isValid.success) {
             return res.status(411).json({
                 msg: "The Data sent is not of the right format",
                 error: isValid.error
