@@ -9,7 +9,7 @@ export const Dashboard = () => {
 
     const fetchBalance = async () => {
         try {
-            const response = await axios.get('https://your-api-endpoint.com/api/v1/user/balance', {
+            const response = await axios.get('https://paytm-e228.onrender.com/api/v1/account/balance', {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
                 }
