@@ -47,6 +47,11 @@ export const Signup = () => {
                                 password
                             });
                             localStorage.setItem('token', response.data.token);
+                            if(response.data.token){
+                                navigate("/Dashboard");
+                            }else{
+                                navigate("/Signup");
+                            }
                         }} label={'SignUp'} />
                     </div>
                     <BottomWarning label={"Already have an account?"} buttonText={"Sign In"} to={"/signin"} />
