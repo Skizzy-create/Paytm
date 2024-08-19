@@ -7,7 +7,7 @@ const { validateAccountTransfer } = require('../middlewares/validators');
 
 const router = express.Router();
 
-router.get('/balance', authMiddleware, authenticateToken, async (req, res) => {
+router.get('/balance', authMiddleware, async (req, res) => {
     const id = req.user.id;
     const id2 = res.user.id;
     console.info("Balance Route Called");
@@ -34,7 +34,7 @@ router.get('/balance', authMiddleware, authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/transfer', validateAccountTransfer, authMiddleware, authenticateToken, async (req, res) => {
+router.post('/transfer', validateAccountTransfer, authMiddleware, async (req, res) => {
     const sendersId = res.user.id;
     const reciverId = req.body.to;
     const amount = req.body.amount;
