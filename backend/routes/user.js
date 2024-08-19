@@ -142,9 +142,9 @@ router.post('/login', validateUserLogin, async (req, res) => {
 router.put('/', validateUserInfoUpdate, authenticateToken, authMiddleware, async (req, res) => {
   const newBody = req.body;
   const id = req.user.id;
-  const id2 = res.user.id;
+  // const id2 = res.user.id;
   console.log("Id from token = ", id);
-  console.log("Id from header = ", id2);
+  // console.log("Id from header = ", id2);
   try {
     const existingUser = await UserModel.findById(id); // Use findById for MongoDB _id
 
