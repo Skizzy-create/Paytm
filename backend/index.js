@@ -36,10 +36,18 @@ const startServer = async () => {
         app.use(countRequests);
         app.use(countTime);
         app.use(cookieParser());
+        const cors = require('cors');
+
         app.use(cors({
-            origin: 'http://localhost:5173', // Replace with your frontend domain
+            origin: [
+                'http://localhost:5173',
+                'https://paytm-olive-three.vercel.app',
+                'https://paytm-git-main-skizzy-creates-projects.vercel.app',
+                'https://paytm-skizzy-creates-projects.vercel.app'
+            ],
             credentials: true
         }));
+
         app.use(express.json());
 
         app.use("/api/v1", mainRouter);
