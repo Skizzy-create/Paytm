@@ -3,7 +3,7 @@ import { Signup } from './pages/Signup';
 import { Dashboard } from './pages/Dashboard';
 import { SendMoney } from './pages/SendMoney';
 import { Signin } from './pages/Signin';
-import { Transction } from './pages/Transction';
+import { Transaction } from './pages/Transction';
 
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
           <Route path='/Signin' element={ <Signin/> } />
           <Route path='/dashboard' element={ <Dashboard /> }/>
           <Route path='/send' element={ <SendMoney />} />
-          <Route path='/transaction' element={ <Transction />} />
+          <Route path='/transaction' element={ <Transaction />} />
         </Routes>
       </BrowserRouter>
     </>

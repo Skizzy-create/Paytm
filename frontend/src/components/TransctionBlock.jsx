@@ -5,8 +5,8 @@ export function TransactionBlock({ id, name, status, amount }) {
     const color = isSuccess ? 'text-green-500' : 'text-red-500';
     const message = isSuccess ? 'Transaction Successful' : 'Transaction Failed';
     const description = isSuccess 
-        ? `You have successfully sent $${amount} to ${name}.`
-        : `There was an error sending $${amount} to ${name}.`;
+        ? `You have successfully sent ₹${amount} to ${name}.`
+        : `There was an error sending ₹${amount} to ${name}.`;
 
     return (
         <div className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">

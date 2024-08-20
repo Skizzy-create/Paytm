@@ -40,8 +40,8 @@ export const SendMoney = () => {
                                 />
                             </div>
                             <button
-                                onClick={(e) => {
-                                    const response = axios.post('https://paytm-e228.onrender.com/api/v1/account/transfer', {
+                                onClick={async (e) => {
+                                    const response = await axios.post('https://paytm-e228.onrender.com/api/v1/account/transfer', {
                                         to: id,
                                         amount: parseInt(amount, 10) // Convert amount to number
                                     }, {
