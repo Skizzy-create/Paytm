@@ -18,7 +18,7 @@ export function TransactionBlock({ id, name, status, amount }) {
                 </div>
                 <div className="flex justify-between items-center ml-12">
                     <span className={`text-2xl font-bold ${color}`}>{message}</span>
-                    <span className="text-gray-500">ID: {id}</span>
+                    <span className="text-gray-500">RECIVER ID: {id}</span>
                 </div>
                 <div className="mt-2 ml-12">
                     <p className="text-lg text-gray-700">{description}</p>
