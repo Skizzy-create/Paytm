@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const SendMoney = () => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
     const name = searchParams.get('name');
+    
     const [amount, setAmount] = useState(0);
+    const navigate = useNavigate();
 
     return (
         <div className="flex justify-center h-screen bg-gray-100">
@@ -39,7 +41,7 @@ export const SendMoney = () => {
                             </div>
                             <button
                                 onClick={(e) => {
-                                    axios.post('https://paytm-e228.onrender.com/api/v1/account/transfer', {
+                                    const response = axios.post('https://paytm-e228.onrender.com/api/v1/account/transfer', {
                                         to: id,
                                         amount: parseInt(amount, 10) // Convert amount to number
                                     }, {
@@ -47,9 +49,14 @@ export const SendMoney = () => {
                                             Authorization: 'Bearer ' + localStorage.getItem('token')
                                         }
                                     });
+                                    if(response.status === 200){
+                                        navigate("/transaction?status=" + response.status + "&id=" + id + "&amount=" + amount + "&name=" + name);
+                                    }else{
+                                        navigate("/transaction?status=" + response.status + "&id=" + id + "&amount=" + amount + "&name=" + name);
+                                    };
                                 }}
                                 className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white"
-                            >
+                                >
                                 Initiate Transfer
                             </button>
                         </div>

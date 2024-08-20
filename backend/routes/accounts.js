@@ -84,13 +84,13 @@ router.post('/transfer', validateAccountTransfer, authMiddleware, async (req, re
         }).session(session);
 
         // adding the money to the recivers account
-        await accountModel.updateOne({ userId: reciverId, }, { $inc: { balance: amount } }).session(session);
-
+        const transaction = await accountModel.updateOne({ userId: reciverId, }, { $inc: { balance: amount } }).session(session);
+        console.log(transaction);
         // Commit the transaction
-        await session.commitTransaction();
-
+        const commit = await session.commitTransaction();
         res.status(200).json({
-            msg: "Transfer Sucessful"
+            msg: "Transfer Sucessful",
+            transaction
         });
 
     } catch (err) {
