@@ -59,7 +59,7 @@ Ensure you have the following installed before starting the project:
    - Start the frontend application:
 
      ```bash
-     npm start
+     npm run dev
      ```
 
    - The frontend app should be accessible at [http://localhost:3000](http://localhost:3000).
