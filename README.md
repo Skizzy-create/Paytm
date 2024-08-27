@@ -359,7 +359,7 @@ The project is deployed on [Render](https://render.com/), and the frontend is ho
 
 ## 🧑‍💻 Author
 
-- **[Your Name]**
+- **Kartik Aslia**
 
 ## 📄 License
 
